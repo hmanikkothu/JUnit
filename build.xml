@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<!-- to save as "build.xml" -->
+   
+<project name="Unit Tests" default="build" basedir=".">
+  <!-- build all classes in this directory -->
+  <!-- To run this: use "ant build" -->
+  <!-- need to include junit.jar in the classpath -->
+  <target name="build" depends="clean">
+  
+	<delete failonerror="false">
+	   <fileset dir="build" /> 
+	</delete>
+	<mkdir dir="build"/>
+  
+	<javac 
+		srcdir="${basedir}"
+		destdir="build" 
+		executable="C:\Program Files\Java\jdk1.7.0_79\bin\javac"
+		includeJavaRuntime="true"
+		fork="true"
+		>
+		<!-- class path to include the JUnit jars -->
+		<classpath>
+		  <pathelement path="${classpath}"/>
+		  <fileset dir="lib">
+			<include name="**/*.jar"/>
+		  </fileset>
+		</classpath>
+	</javac>
+	<echo message="Build complete" />
+  </target>
+   
+  <!-- Test and build all files  -->
+  <!-- To run this: use "ant" (default) or "ant run" -->
+  <target name="run" depends="build">
+
+	<delete failonerror="false">
+	   <fileset dir="reports" /> 
+	</delete>
+	<mkdir dir="reports"/>
+
+	<junit printsummary="yes" haltonfailure="no" showoutput="yes">
+
+		<!-- class path to include the JUnit jars -->	
+		<classpath>
+		  <pathelement path="${classpath}"/>
+		  <pathelement path="build"/>
+		  <fileset dir="lib">
+			<include name="**/*.jar"/>
+		  </fileset>
+		</classpath>
+
+		<!-- Generate text status summary for each test-->
+		<formatter type="plain" usefile="false"/>
+		
+		<!-- Generate xml reports -->
+		<formatter type="xml" usefile="true"/>
+		
+	  <batchtest fork="yes" todir="reports">
+		<fileset dir=".">
+		  <include name="**/*Test*.java"/>
+		</fileset>
+	  </batchtest>
+	</junit>
+	
+	<echo message="Unit Test done" />
+  </target>
+   
+  <!-- delete all class files -->
+  <!-- To run this: use "ant clean" -->
+  <target name="clean">
+	  <delete>
+		<fileset dir="build" includes="*.class" />
+	  </delete>
+	<echo message="Clean done" />
+  </target>
+</project>

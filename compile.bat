@@ -1,0 +1,1 @@
+javac -cp "c:\workspce\JUnitExp\lib\*;" Calculator.java AddSubTest.java DivTest.java
